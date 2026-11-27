@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Beigebox Supply Co.</title>
+  <meta name="description" content="Retro casework and accessories that make a modern PC look like 1984.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=VT323&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Beigebox Supply Co. home">
+      <span class="logo-mark stripes" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span class="logo-word">BEIGEBOX<small>Supply Co. · Est. 2026</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#catalog">Catalog</a>
+      <a href="#builder">Rig Builder</a>
+      <a href="#fit">Will it fit?</a>
+    </nav>
+    <button class="cart-btn" id="cart-open" type="button" aria-label="Open cart">Cart <span class="lcd" id="cart-count">00</span></button>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Retro casework for modern hardware</div>
+        <h1>Your 2026 rig, <em>recased</em> for 1984.</h1>
+        <p class="lede">Putty-plastic shells, doubleshot keycaps, tape-deck bay covers and CRT bezels, all built to hold a current GPU, a 360&nbsp;mm radiator and USB-C. It looks like the office terminal and runs like your gaming PC.</p>
+        <div class="btn-row">
+          <a class="btn" href="#catalog">Browse the catalog ▸</a>
+          <a class="btn ghost" href="#builder">Build a rig</a>
+        </div>
+        <div class="hero-facts">
+          <div><b>ATX 3.1</b>Every shell, every PSU</div>
+          <div><b>340 mm</b>Max GPU length</div>
+          <div><b>RAL 1015</b>Our putty, colour-matched</div>
+        </div>
+      </div>
+
+      <div class="monitor" aria-label="Retro CRT monitor showing a boot screen">
+        <div class="bezel">
+          <div class="screen" id="screen">
+            <div>BEIGEBOX BIOS v1.84 &nbsp;<span class="dim">(C) BBSC 2026</span></div>
+            <div class="dim">────────────────────────────</div>
+            <div>CPU ......... 24 CORES @ 5.7GHz</div>
+            <div>MEMORY TEST . 65536K OK</div>
+            <div>GPU ......... DETECTED [340mm]</div>
+            <div>CASEWORK .... PUTTY / RAL 1015</div>
+            <div>TURBO ....... <span id="turbo">ON</span></div>
+            <div>&nbsp;</div>
+            <div>LOADING CATALOG.DAT</div>
+            <div><span class="meter" id="meter">[████████████░░░░]</span> <span id="pct">75</span>%</div>
+            <div>&nbsp;</div>
+            <div>C:\BEIGEBOX&gt; <span id="typed">SHOP /ALL</span><span class="cursor"></span></div>
+          </div>
+          <div class="chin">
+            <span class="badge">BB-84</span>
+            <span class="stripes" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <span class="spacer"></span>
+            <span>Contrast</span><span class="knob"></span><span class="knob"></span>
+            <span class="power-led" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="stand"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" aria-label="Shop notes">
+    <div class="ticker">
+      <div class="ticker-group">
+        <span>Free shipping on orders over $150</span>
+        <span>Batch 07 putty shells ship Dec 12</span>
+        <span>New: headsets, mics and controllers</span>
+        <span>New colourway: Cherry cola stripes</span>
+        <span>Every part fits standard ATX mounts</span>
+        <span>30-day returns, original packaging</span>
+        <span>Phosphor LED strips now in P3 amber</span>
+      </div>
+      <!-- Duplicate copy so the loop is seamless; hidden from screen readers -->
+      <div class="ticker-group" aria-hidden="true">
+        <span>Free shipping on orders over $150</span>
+        <span>Batch 07 putty shells ship Dec 12</span>
+        <span>New: headsets, mics and controllers</span>
+        <span>New colourway: Cherry cola stripes</span>
+        <span>Every part fits standard ATX mounts</span>
+        <span>30-day returns, original packaging</span>
+        <span>Phosphor LED strips now in P3 amber</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="catalog">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Catalog · Winter 2026 edition</div>
+          <h2>Parts catalog</h2>
+        </div>
+        <p>Every item carries a catalog number, like the mail-order books it's modelled on. Filter by department, then add parts straight to your cart.</p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filter by department"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="builder">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Rig builder</div>
+          <h2>Spec your tower</h2>
+        </div>
+        <p>Pick a shell, a stripe set and the front-bay modules. The preview and price update as you go, and the whole build goes into your cart as one kit.</p>
+      </div>
+
+      <div class="builder">
+        <div class="preview" id="preview" aria-live="polite"></div>
+        <form class="controls" id="build-form">
+          <fieldset>
+            <legend>Shell colour</legend>
+            <div class="swatches" id="shells"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Stripe set</legend>
+            <div class="swatches" id="stripesets"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Front bays (3 slots)</legend>
+            <div class="toggles" id="bays"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Engraved badge</legend>
+            <div class="text-in">
+              <input id="badge-text" maxlength="10" value="KL-84" aria-describedby="badge-hint" autocomplete="off">
+              <span class="hint" id="badge-hint">Up to 10 characters, +$18</span>
+            </div>
+          </fieldset>
+          <div class="total-row">
+            <div><span class="k">Kit total</span><span class="lcd" id="build-total">$000</span></div>
+            <button class="btn" type="submit" id="build-add">Add kit to cart</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="fit">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Spec sheet</div>
+          <h2>Old outside, current inside</h2>
+        </div>
+        <p>The shells are new tooling, not salvaged cases. Here is what goes in them.</p>
+      </div>
+      <div class="sheet">
+        <div><span class="k">340mm</span><h3>Full-length GPUs</h3><p>Triple-slot cards up to 340&nbsp;mm, with a vertical mount bracket in the box.</p></div>
+        <div><span class="k">360mm</span><h3>Radiator in the roof</h3><p>The top panel lifts off. Room for a 360&nbsp;mm AIO or three 120&nbsp;mm fans behind the vents.</p></div>
+        <div><span class="k">USB-C</span><h3>Hidden I/O</h3><p>Front USB-C 20&nbsp;Gbps and two USB-A ports sit behind the floppy-slot flip door.</p></div>
+        <div><span class="k">ABS+PC</span><h3>UV-stable plastic</h3><p>Our putty blend resists yellowing. It stays beige on purpose and won't drift to banana.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="stripes" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="wrap">
+    <div>
+      <div class="logo-word" style="color: var(--putty)">BEIGEBOX<small style="color: #9A8C78">Supply Co.</small></div>
+      <p style="max-width: 30em; margin-top: 1rem;">A small shop making retro casework and accessories for people who want their PC to look like it came out of a 1984 office.</p>
+      <form class="news" id="news">
+        <label for="news-email" class="hint" style="width: 100%; color: var(--putty-deep)">Get the quarterly catalog by email</label>
+        <input id="news-email" type="email" placeholder="you@example.com" required autocomplete="email">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <div class="news-msg" id="news-msg" aria-live="polite"></div>
+    </div>
+    <div>
+      <h4>Departments</h4>
+      <ul id="foot-depts"></ul>
+    </div>
+    <div>
+      <h4>Help desk</h4>
+      <ul>
+        <li>Shipping &amp; returns</li>
+        <li>Fit guide (PDF)</li>
+        <li>Paint &amp; RAL codes</li>
+        <li>Order status</li>
+      </ul>
+    </div>
+    <div class="fine">CATALOG NO. BB-W26 · PRICES IN USD · ALL TRADEMARKS PROPERTY OF THEIR OWNERS · PROTOTYPE STOREFRONT, CHECKOUT NOT CONNECTED</div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Cart">
+  <header>
+    <h2>Your order</h2>
+    <button class="x" id="cart-close" type="button" aria-label="Close cart">✕</button>
+  </header>
+  <div class="lines" id="lines"></div>
+  <div class="sum">
+    <div class="r"><span>Subtotal</span><span id="subtotal">$0</span></div>
+    <div class="r"><span>Shipping</span><span id="ship">$0</span></div>
+    <button class="btn" type="button" id="checkout">Check out</button>
+    <div class="note" id="checkout-note" aria-live="polite"></div>
+  </div>
+</aside>
+
+<dialog class="pd" id="pd" aria-labelledby="pd-title">
+  <div class="pd-inner">
+    <div class="pd-art" id="pd-art"></div>
+    <div class="pd-info">
+      <div class="pd-top">
+        <span class="pd-sku" id="pd-sku"></span>
+        <button class="x" id="pd-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <h2 id="pd-title"></h2>
+      <p class="pd-desc" id="pd-desc"></p>
+      <div class="specs" id="pd-specs"></div>
+      <div class="pd-opts" id="pd-opts"></div>
+      <p class="hint">Same price in every colourway. Ships in 3–5 business days.</p>
+      <div class="pd-buy">
+        <div class="pd-qty" role="group" aria-label="Quantity">
+          <button type="button" id="pd-minus" aria-label="Fewer">−</button>
+          <span id="pd-qty" aria-live="polite">1</span>
+          <button type="button" id="pd-plus" aria-label="More">+</button>
+        </div>
+        <span class="lcd" id="pd-total">$0</span>
+        <button class="btn" type="button" id="pd-add">Add to cart</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+
+<script src="js/app.js"></script>
+</body>
+</html>
