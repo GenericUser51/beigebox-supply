@@ -22,6 +22,7 @@
       <a href="#catalog">Catalog</a>
       <a href="#builder">Rig Builder</a>
       <a href="#fit">Will it fit?</a>
+      <a href="#help">Help</a>
     </nav>
     <button class="cart-btn" id="cart-open" type="button" aria-label="Open cart">Cart <span class="lcd" id="cart-count">00</span></button>
   </div>
@@ -170,6 +171,57 @@
       </div>
     </div>
   </section>
+
+  <section id="help">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Help desk</div>
+          <h2>Before you order</h2>
+        </div>
+        <p>Shipping, finishes, fit and how checkout works. Click a question to open it.</p>
+      </div>
+      <div class="faq">
+        <details id="help-shipping">
+          <summary>Shipping &amp; returns</summary>
+          <div class="faq-body">
+            <p>In-stock parts ship in 3–5 business days. Batch 07 putty shells ship from December 12.</p>
+            <table class="mini">
+              <tr><th>Standard</th><td>5–8 business days</td><td>Free over $150, otherwise $12</td></tr>
+              <tr><th>Express</th><td>2–3 business days</td><td>$25</td></tr>
+            </table>
+            <p>Unused parts can be returned within 30 days in their original packaging. Engraved badges and custom rig-builder kits can't be returned unless they arrive damaged.</p>
+          </div>
+        </details>
+        <details id="help-finishes">
+          <summary>Colours &amp; finishes</summary>
+          <div class="faq-body">
+            <p>Every part comes in four shell finishes and four accent stripe sets. Open any product to preview them on that part.</p>
+            <table class="mini">
+              <tr><th>Putty</th><td>Warm beige, matched to RAL 1015 light ivory</td></tr>
+              <tr><th>Smoke grey</th><td>Cool office grey, close to RAL 7044</td></tr>
+              <tr><th>Charcoal</th><td>Near-black with a soft matte texture</td></tr>
+              <tr><th>Lab white</th><td>Bright instrument white, close to RAL 9010</td></tr>
+            </table>
+            <p>Stripe sets: <b>Sunset</b> (brown to amber), <b>Mission</b> (navy to ice blue), <b>Phosphor</b> (forest to CRT green) and <b>Cherry cola</b> (oxblood to pink). LED strips come in P1 green, P3 amber, P4 white and LED red.</p>
+          </div>
+        </details>
+        <details id="help-fit">
+          <summary>Will it fit my hardware?</summary>
+          <div class="faq-body">
+            <p>Tower shells take ATX and mATX boards, graphics cards up to 340&nbsp;mm and a 360&nbsp;mm radiator in the roof. The Desktop Slab takes mATX or ITX with an SFX power supply. Bay covers fit any standard 5.25" or 3.5" drive bay. The full list is in the <a href="#fit">spec sheet</a>.</p>
+          </div>
+        </details>
+        <details id="help-orders">
+          <summary>Ordering &amp; payment</summary>
+          <div class="faq-body">
+            <p>Add parts to the cart, then choose <b>Check out</b>. Enter your shipping details and pick a delivery speed, and checkout prepares an itemised order summary with an order number.</p>
+            <p>This site doesn't take card payments, so no payment details are ever asked for. Use <b>Copy summary</b> on the last step to keep a copy of your order.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -178,12 +230,7 @@
     <div>
       <div class="logo-word" style="color: var(--putty)">BEIGEBOX<small style="color: #9A8C78">Supply Co.</small></div>
       <p style="max-width: 30em; margin-top: 1rem;">A small shop making retro casework and accessories for people who want their PC to look like it came out of a 1984 office.</p>
-      <form class="news" id="news">
-        <label for="news-email" class="hint" style="width: 100%; color: var(--putty-deep)">Get the quarterly catalog by email</label>
-        <input id="news-email" type="email" placeholder="you@example.com" required autocomplete="email">
-        <button class="btn" type="submit">Subscribe</button>
-      </form>
-      <div class="news-msg" id="news-msg" aria-live="polite"></div>
+      <div class="foot-term" aria-hidden="true">C:\BEIGEBOX&gt; CATALOG W26 LOADED<span class="cursor"></span></div>
     </div>
     <div>
       <h4>Departments</h4>
@@ -192,28 +239,83 @@
     <div>
       <h4>Help desk</h4>
       <ul>
-        <li>Shipping &amp; returns</li>
-        <li>Fit guide (PDF)</li>
-        <li>Paint &amp; RAL codes</li>
-        <li>Order status</li>
+        <li><a href="#help-shipping" data-help>Shipping &amp; returns</a></li>
+        <li><a href="#help-finishes" data-help>Colours &amp; finishes</a></li>
+        <li><a href="#help-fit" data-help>Fit guide</a></li>
+        <li><a href="#help-orders" data-help>Ordering &amp; payment</a></li>
+        <li><a href="#builder">Rig builder</a></li>
       </ul>
     </div>
-    <div class="fine">CATALOG NO. BB-W26 · PRICES IN USD · ALL TRADEMARKS PROPERTY OF THEIR OWNERS · PROTOTYPE STOREFRONT, CHECKOUT NOT CONNECTED</div>
+    <div class="fine">CATALOG NO. BB-W26 · PRICES IN USD · © 2026 BEIGEBOX SUPPLY CO. · ALL TRADEMARKS PROPERTY OF THEIR OWNERS</div>
   </div>
 </footer>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Cart">
   <header>
-    <h2>Your order</h2>
+    <div>
+      <div class="steps" id="steps" aria-hidden="true"><span class="on">1 Cart</span><span>2 Shipping</span><span>3 Summary</span></div>
+      <h2 id="drawer-title">Your order</h2>
+    </div>
     <button class="x" id="cart-close" type="button" aria-label="Close cart">✕</button>
   </header>
-  <div class="lines" id="lines"></div>
-  <div class="sum">
-    <div class="r"><span>Subtotal</span><span id="subtotal">$0</span></div>
-    <div class="r"><span>Shipping</span><span id="ship">$0</span></div>
-    <button class="btn" type="button" id="checkout">Check out</button>
-    <div class="note" id="checkout-note" aria-live="polite"></div>
+
+  <div class="view" id="view-cart">
+    <div class="lines" id="lines"></div>
+    <div class="sum">
+      <div class="r"><span>Subtotal</span><span id="subtotal">$0</span></div>
+      <div class="r"><span>Shipping</span><span id="ship">$0</span></div>
+      <div class="ship-hint" id="ship-hint"></div>
+      <button class="btn" type="button" id="checkout">Check out</button>
+      <div class="note" id="checkout-note" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <form class="view checkout" id="view-checkout" novalidate hidden>
+    <div class="fields">
+      <div class="field"><label for="co-name">Full name</label><input id="co-name" autocomplete="name" required></div>
+      <div class="field"><label for="co-email">Email</label><input id="co-email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="co-address">Street address</label><input id="co-address" autocomplete="street-address" required></div>
+      <div class="field-row">
+        <div class="field"><label for="co-city">City</label><input id="co-city" autocomplete="address-level2" required></div>
+        <div class="field"><label for="co-postcode">Postcode</label><input id="co-postcode" autocomplete="postal-code" required></div>
+      </div>
+      <div class="field"><label for="co-country">Country</label>
+        <select id="co-country" autocomplete="country-name" required>
+          <option value="">Choose a country</option>
+          <option>United States</option><option>Canada</option><option>United Kingdom</option>
+          <option>Philippines</option><option>Australia</option><option>Singapore</option>
+          <option>Germany</option><option>Japan</option>
+        </select>
+      </div>
+      <fieldset class="field">
+        <legend>Delivery</legend>
+        <div class="ship-opts">
+          <label class="ship-opt"><input type="radio" name="co-ship" value="standard" id="co-ship-standard" checked><span><b>Standard</b> 5–8 business days</span><span id="co-ship-standard-price">$12</span></label>
+          <label class="ship-opt"><input type="radio" name="co-ship" value="express" id="co-ship-express"><span><b>Express</b> 2–3 business days</span><span>$25</span></label>
+        </div>
+      </fieldset>
+      <p class="form-err" id="co-err" role="alert"></p>
+    </div>
+    <div class="sum">
+      <div class="r"><span>Total</span><span id="co-total">$0</span></div>
+      <p class="note">This site doesn't take card payments. You'll get an itemised order summary to copy.</p>
+      <div class="btn-row">
+        <button class="btn ghost" type="button" id="co-back">Back to cart</button>
+        <button class="btn" type="submit">Prepare order</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="view" id="view-done" hidden>
+    <pre class="receipt" id="receipt" tabindex="0" aria-label="Order summary"></pre>
+    <div class="sum">
+      <div class="btn-row">
+        <button class="btn" type="button" id="co-copy">Copy summary</button>
+        <button class="btn ghost" type="button" id="co-new">Start a new order</button>
+      </div>
+      <div class="note" id="copy-note" aria-live="polite"></div>
+    </div>
   </div>
 </aside>
 

@@ -311,9 +311,29 @@ footer h4 { font-family: var(--f-mono); font-size: .72rem; text-transform: upper
 footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
 footer a { color: var(--putty); }
 footer .fine { grid-column: 1 / -1; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em; color: #9A8C78; border-top: 1px solid #4A403A; padding-top: 1.25rem; }
-footer .news { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
-footer .news input { flex: 1; min-width: 0; padding: .6rem .7rem; border-radius: 3px; border: 1px solid #5A4E45; background: var(--crt); color: var(--phosphor); font-family: var(--f-screen); font-size: 1.15rem; }
-footer .news-msg { font-family: var(--f-screen); color: var(--phosphor); font-size: 1.1rem; min-height: 1.2em; margin-top: .4rem; }
+footer a { text-decoration: none; border-bottom: 1px solid #5A4E45; }
+footer a:hover { color: var(--amber); border-color: var(--amber); }
+.foot-term { margin-top: 1.25rem; display: inline-block; font-family: var(--f-screen); font-size: 1.15rem; color: var(--phosphor); background: var(--crt); padding: .35rem .7rem; border-radius: 3px; text-shadow: 0 0 5px rgba(166,255,184,.45); }
+
+/* ---------- Help desk ---------- */
+.faq { display: grid; gap: .7rem; }
+.faq details { background: var(--shell); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 2px 0 var(--putty-deep); }
+.faq summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1rem 1.2rem; font-family: var(--f-display); font-size: .9rem; letter-spacing: .03em;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--f-mono); font-size: 1.2rem; color: var(--rust); }
+.faq details[open] summary::after { content: "−"; }
+.faq details[open] summary { border-bottom: 1px dashed var(--line); }
+.faq summary:hover { color: var(--rust); }
+.faq-body { padding: .9rem 1.2rem 1.1rem; max-width: 70ch; }
+.faq-body p { margin: 0 0 .7rem; color: var(--ink-soft); }
+.faq-body p:last-child { margin-bottom: 0; }
+.faq-body a { color: var(--rust); }
+.mini { border-collapse: collapse; margin: 0 0 .8rem; font-size: .88rem; width: 100%; }
+.mini th, .mini td { text-align: left; padding: .45rem .7rem .45rem 0; border-bottom: 1px solid var(--putty-deep); vertical-align: top; }
+.mini th { font-family: var(--f-mono); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; white-space: nowrap; }
 
 /* ---------- Cart drawer ---------- */
 .scrim { position: fixed; inset: 0; background: rgba(42,35,30,.45); z-index: 40; }
@@ -336,7 +356,37 @@ footer .news-msg { font-family: var(--f-screen); color: var(--phosphor); font-si
 .empty { font-family: var(--f-screen); font-size: 1.3rem; color: var(--phosphor); background: var(--crt); padding: 1.25rem; border-radius: 4px; line-height: 1.2; }
 .sum { border-top: 1px dashed var(--line); padding-top: 1rem; margin-top: 1rem; display: grid; gap: .8rem; }
 .sum .r { display: flex; justify-content: space-between; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
-.sum .note { font-size: .82rem; color: var(--ink-soft); min-height: 1.2em; }
+.sum .note { font-size: .82rem; color: var(--ink-soft); min-height: 1.2em; margin: 0; }
+.ship-hint { font-family: var(--f-mono); font-size: .72rem; color: var(--rust); min-height: 1em; margin-top: -.4rem; }
+.btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+.drawer .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.drawer .btn-row .btn { justify-content: center; padding-inline: .6rem; }
+
+/* Checkout views inside the drawer */
+.view { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.steps { display: flex; gap: .5rem; margin-bottom: .35rem; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--line); }
+.steps span.on { color: var(--rust); }
+.checkout .fields { flex: 1; overflow-y: auto; display: grid; align-content: start; gap: .8rem; padding: 2px 2px 0; }
+.field { display: grid; gap: .3rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.field label, .field legend { font-family: var(--f-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-soft); padding: 0; }
+.field input, .field select {
+  width: 100%; min-width: 0; padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 4px;
+  background: #FBF7EE; color: var(--ink); font-size: .95rem;
+}
+.field input[aria-invalid="true"], .field select[aria-invalid="true"] { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(196,80,42,.2); }
+.field-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: .6rem; }
+.ship-opts { display: grid; gap: .5rem; }
+.ship-opt { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .6rem; padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 4px; background: var(--putty); cursor: pointer; font-size: .88rem; }
+.ship-opt:has(input:checked) { border-color: var(--ink); background: #FBF7EE; }
+.ship-opt span:last-child { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.form-err { color: var(--rust); font-size: .85rem; min-height: 1.2em; margin: 0; }
+.receipt {
+  flex: 1; overflow: auto; margin: 0; padding: 1.1rem 1rem;
+  font-family: var(--f-mono); font-size: .74rem; line-height: 1.55; color: var(--ink); white-space: pre;
+  background: #FFFDF7; border: 1px solid var(--line); border-radius: 2px;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 22px, rgba(91,58,36,.05) 22px 23px);
+  box-shadow: 0 2px 6px rgba(42,35,30,.12);
+}
 
 @media (max-width: 900px) {
   .hero .wrap { grid-template-columns: 1fr; gap: 2.5rem; padding-block: 2.5rem; }

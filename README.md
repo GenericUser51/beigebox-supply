@@ -25,8 +25,14 @@ No build step. Either:
 - **Product colourways (detail popup):** `OPTION_GROUPS` in `js/app.js`. Each choice overrides the colour tokens the product drawing uses. A product uses shell finish + accent stripe by default; set `opts` on a product to change which groups it offers, and `defaults` to change its starting colourway.
 - **Colours and fonts:** the `:root` tokens in `css/styles.css`.
 
-## Not wired up yet
+- **Help desk answers:** the `#help` section in `index.html`. Footer links open the matching question.
+- **Shipping prices:** `FREE_SHIP` and `shipCost()` in `js/app.js`.
 
-- Checkout and the newsletter form only show a message; there is no backend.
+## Checkout
+
+Checkout runs in three steps inside the cart drawer: cart, shipping details (validated), then an itemised order summary with an order number and a Copy summary button. The site has no backend, so no payment is taken and nothing is sent anywhere. The Help desk says this to shoppers.
+
+## Limits
+
 - The cart lives in memory and clears on reload.
-- Product names, prices and specs are placeholders.
+- Prices and specs are concept figures, not live stock.

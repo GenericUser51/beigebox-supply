@@ -301,18 +301,120 @@
         lines.appendChild(el);
       });
     }
-    const ship = sub === 0 || sub >= 150 ? 0 : 12;
+    const ship = shipCost(sub, "standard");
     $("#subtotal").textContent = money(sub);
     $("#ship").textContent = sub === 0 ? "$0" : ship === 0 ? "Free" : money(ship);
+    $("#ship-hint").textContent = sub > 0 && sub < FREE_SHIP ? `Add ${money(FREE_SHIP - sub)} more for free standard shipping.` : "";
+    $("#checkout").disabled = !cart.size;
     $("#checkout-note").textContent = "";
+    if (view === "checkout") updateCheckoutTotal();
   }
   const openCart = (open) => { $("#drawer").hidden = !open; $("#scrim").hidden = !open; if (open) $("#cart-close").focus(); };
   $("#cart-open").onclick = () => openCart(true);
   $("#cart-close").onclick = () => openCart(false);
   $("#scrim").onclick = () => openCart(false);
   document.addEventListener("keydown", e => { if (e.key === "Escape") openCart(false); });
+
+  /* ---------- Checkout: cart -> shipping details -> order summary ---------- */
+  const FREE_SHIP = 150;
+  const SHIPPING = {
+    standard: { name: "Standard", days: "5-8 business days" },
+    express: { name: "Express", days: "2-3 business days" }
+  };
+  function shipCost(sub, method) { return method === "express" ? 25 : sub >= FREE_SHIP ? 0 : 12; }
+  function cartSubtotal() { let s = 0; cart.forEach(i => { s += i.qty * i.price; }); return s; }
+  var view = "cart";
+  const TITLES = { cart: "Your order", checkout: "Shipping details", done: "Order summary" };
+  function showView(v) {
+    view = v;
+    $("#view-cart").hidden = v !== "cart";
+    $("#view-checkout").hidden = v !== "checkout";
+    $("#view-done").hidden = v !== "done";
+    $("#drawer-title").textContent = TITLES[v];
+    const idx = ["cart", "checkout", "done"].indexOf(v);
+    [...$("#steps").children].forEach((s, i) => s.classList.toggle("on", i <= idx));
+  }
+  const coForm = $("#view-checkout");
+  const shipMethod = () => (coForm.querySelector('input[name="co-ship"]:checked') || {}).value || "standard";
+  function updateCheckoutTotal() {
+    const sub = cartSubtotal();
+    $("#co-ship-standard-price").textContent = sub >= FREE_SHIP ? "Free" : "$12";
+    $("#co-total").textContent = money(sub + shipCost(sub, shipMethod()));
+  }
   $("#checkout").onclick = () => {
-    $("#checkout-note").textContent = cart.size ? "Checkout isn't connected in this prototype. Your cart stays here while you browse." : "Your cart is empty.";
+    if (!cart.size) { $("#checkout-note").textContent = "Your cart is empty."; return; }
+    showView("checkout"); updateCheckoutTotal(); $("#co-name").focus();
+  };
+  $("#co-back").onclick = () => showView("cart");
+  coForm.addEventListener("change", updateCheckoutTotal);
+  coForm.addEventListener("input", e => { if (e.target.getAttribute("aria-invalid")) e.target.removeAttribute("aria-invalid"); });
+
+  const FIELDS = [
+    ["co-name", "full name"], ["co-email", "email"], ["co-address", "street address"],
+    ["co-city", "city"], ["co-postcode", "postcode"], ["co-country", "country"]
+  ];
+  const pad = (l, r, w = 34) => l + " ".repeat(Math.max(1, w - l.length - r.length)) + r;
+  const RULE = "-".repeat(34);
+  let receiptText = "";
+  coForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const missing = [];
+    FIELDS.forEach(([id, label]) => {
+      const el = $("#" + id);
+      const v = el.value.trim();
+      const bad = !v || (id === "co-email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+      if (bad) { el.setAttribute("aria-invalid", "true"); missing.push(label); } else el.removeAttribute("aria-invalid");
+    });
+    if (missing.length) {
+      $("#co-err").textContent = `Check your ${missing.join(", ")}.`;
+      $("#" + FIELDS.find(([id]) => $("#" + id).getAttribute("aria-invalid"))[0]).focus();
+      return;
+    }
+    $("#co-err").textContent = "";
+    const now = new Date();
+    const ymd = now.toISOString().slice(2, 10).replace(/-/g, "");
+    const orderNo = `BB-${ymd}-${String(Math.floor(1000 + Math.random() * 9000))}`;
+    const sub = cartSubtotal(), method = shipMethod(), ship = shipCost(sub, method);
+    const v = id => $("#" + id).value.trim();
+    const lines = [
+      "BEIGEBOX SUPPLY CO.", "ORDER SUMMARY", RULE,
+      pad("ORDER NO.", orderNo),
+      pad("DATE", now.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })),
+      RULE
+    ];
+    cart.forEach(i => {
+      lines.push(`${i.qty} x ${i.name}`);
+      lines.push(pad("  " + i.sub.split(" · ")[0], money(i.price * i.qty)));
+      const extra = i.sub.split(" · ").slice(1).join(", ");
+      if (extra) lines.push("  " + extra);
+    });
+    lines.push(RULE,
+      pad("SUBTOTAL", money(sub)),
+      pad(`SHIPPING (${SHIPPING[method].name.toUpperCase()})`, ship ? money(ship) : "FREE"),
+      pad("TOTAL", money(sub + ship)),
+      RULE, "SHIP TO",
+      v("co-name"), v("co-address"), `${v("co-city")} ${v("co-postcode")}`, v("co-country"), v("co-email"),
+      RULE, `${SHIPPING[method].name.toUpperCase()} DELIVERY: ${SHIPPING[method].days.toUpperCase()}`,
+      "THANK YOU FOR SHOPPING BEIGEBOX");
+    receiptText = lines.join("\n");
+    $("#receipt").textContent = receiptText;
+    $("#copy-note").textContent = "";
+    showView("done");
+    $("#receipt").focus();
+  });
+  $("#co-copy").onclick = () => {
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents($("#receipt"));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      $("#copy-note").textContent = "Summary selected. Press Ctrl+C (or Cmd+C) to copy it.";
+    };
+    try {
+      navigator.clipboard.writeText(receiptText).then(() => { $("#copy-note").textContent = "Summary copied."; }, fallback);
+    } catch (err) { fallback(); }
+  };
+  $("#co-new").onclick = () => {
+    cart.clear(); coForm.reset(); receiptText = "";
+    showView("cart"); renderCart();
   };
 
   /* ---------- Catalog render ---------- */
@@ -405,7 +507,24 @@
     $("#pd-add").textContent = `Added ${pd.qty} ✓`;
     setTimeout(closeDetail, 650);
   };
-  $("#foot-depts").innerHTML = DEPTS.slice(1).map(d => `<li>${d}</li>`).join("");
+  // Footer department links filter the catalog, then the anchor scrolls to it.
+  $("#foot-depts").innerHTML = DEPTS.slice(1).map(d => `<li><a href="#catalog" data-dept="${d}">${d}</a></li>`).join("");
+  $("#foot-depts").addEventListener("click", e => {
+    const a = e.target.closest("a[data-dept]");
+    if (a) { dept = a.dataset.dept; renderFilters(); renderGrid(); }
+  });
+
+  // Help desk links open the matching question before the page scrolls to it.
+  function openHelp(id) {
+    const d = document.getElementById(id);
+    if (d && d.tagName === "DETAILS") d.open = true;
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#help-"]');
+    if (a) openHelp(a.getAttribute("href").slice(1));
+  });
+  window.addEventListener("hashchange", () => openHelp(location.hash.slice(1)));
+  if (location.hash) openHelp(location.hash.slice(1));
 
   /* ---------- Rig builder ---------- */
   const SHELLS = [
@@ -507,12 +626,6 @@
     addToCart(key, { name: `Model 84 Kit · ${sh}`, sub: `${st} stripes · ${bays} bay module${bays === 1 ? "" : "s"}${state.badge.trim() ? ` · badge "${state.badge.toUpperCase()}"` : ""}`, price: buildTotal() });
     const btn = $("#build-add"); btn.textContent = "Kit added ✓";
     setTimeout(() => { btn.textContent = "Add kit to cart"; }, 1400);
-  });
-
-  /* ---------- Newsletter (no backend in prototype) ---------- */
-  $("#news").addEventListener("submit", e => {
-    e.preventDefault();
-    $("#news-msg").textContent = "> SUBSCRIBE.EXE: list isn't connected yet in this prototype.";
   });
 
   /* ---------- CRT ambience: loading meter + typed command ---------- */
